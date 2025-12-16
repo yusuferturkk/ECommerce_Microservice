@@ -42,6 +42,7 @@ namespace MultiShop.Order.Application.Features.Mediator.Handlers.OrderingHandler
                     ProductId = x.ProductId,
                     ProductName = x.ProductName,
                     ProductPrice = x.ProductPrice,
+                    ProductImageUrl = x.ProductImageUrl,
                     ProductAmount = x.ProductAmount,
                     ProductTotalPrice = x.ProductTotalPrice
                 }).ToList()
