@@ -1,0 +1,15 @@
+﻿using MultiShop.Order.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MultiShop.Order.Application.Interfaces
+{
+    public interface IOrderingRepository
+    {
+        Task<List<Ordering>> GetOrderingByUserId(string userId);
+        Task<Ordering> GetOrderingDetailsById(int id);
+    }
+}

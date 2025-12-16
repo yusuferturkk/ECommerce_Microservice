@@ -1,0 +1,22 @@
+﻿@model List<ResultOrderDetailDto>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ürün Adı</th>
+            <th>Fiyat</th>
+            <th>Adet</th>
+            <th>Toplam</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.ProductPrice ₺</td>
+                <td>@item.ProductAmount</td>
+                <td>@item.ProductTotalPrice ₺</td>
+            </tr>
+        }
+    </tbody>
+</table>
