@@ -7,7 +7,7 @@
 
 ## 📖 Proje Hakkında
 
-Bu proje, **.NET Core** kullanılarak geliştirilmiş kapsamlı bir **Mikroservis E-Ticaret** platformudur. Üniversite ortamında geliştirilen geliştirilen bu uygulama, modern yazılım mimarilerini ve endüstri standartlarını (Soğan Mimarisi, CQRS, Event-Driven Design) pratik bir senaryo üzerinde uygulamayı hedefler.
+Bu proje, **.NET Core** kullanılarak geliştirilmiş kapsamlı bir **Mikroservis E-Ticaret** platformudur. Üniversite ortamında geliştirilen bu uygulama, modern yazılım mimarilerini ve endüstri standartlarını (Soğan Mimarisi, CQRS, Event-Driven Design) pratik bir senaryo üzerinde uygulamayı hedefler.
 
 Proje; bağımsız deploy edilebilen servislerden, merkezi bir kimlik doğrulama yapısından ve kullanıcı dostu bir arayüzden oluşmaktadır.
 
