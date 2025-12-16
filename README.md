@@ -5,7 +5,7 @@
 ![Pattern](https://img.shields.io/badge/Pattern-CQRS%20%26%20Mediator-green)
 ![License](https://img.shields.io/badge/License-MIT-orange)
 
-## 📖 Proje Hakkında (About The Project)
+## 📖 Proje Hakkında
 
 Bu proje, **.NET Core** kullanılarak geliştirilmiş kapsamlı bir **Mikroservis E-Ticaret** platformudur. Üniversite bitirme projesi olarak geliştirilen bu uygulama, modern yazılım mimarilerini ve endüstri standartlarını (Soğan Mimarisi, CQRS, Event-Driven Design) pratik bir senaryo üzerinde uygulamayı hedefler.
 
