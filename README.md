@@ -36,7 +36,7 @@ Projede **Microservice Architecture** benimsenmiş olup, servisler arası ileti�
 
 ---
 
-## 🧩 Mikroservisler (Microservices)
+## 🧩 Mikroservisler
 
 Proje aşağıdaki temel mikroservislerden oluşmaktadır:
 
@@ -83,9 +83,7 @@ Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyebi
 
 ---
 
-## 📸 Ekran Görüntüleri (Screenshots)
-
-*(Buraya projenin arayüzünden, özellikle Admin paneli, Sepet sayfası, Sipariş Detay Modal'ı gibi kısımlardan ekran görüntüleri ekleyebilirsin. Örn: `/Screenshots/order-detail.png`)*
+## 📸 Ekran Görüntüleri
 
 | Ana Sayfa | Sipariş Detayı |
 | :---: | :---: |
