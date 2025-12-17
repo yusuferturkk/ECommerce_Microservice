@@ -48,7 +48,9 @@ namespace MultiShop.WebUI.Services.BasketServices
                 values.BasketItems = new List<BasketItemDto>();
             }
 
-            var existingItem = values.BasketItems.FirstOrDefault(x => x.ProductId == basketItemDto.ProductId);
+            var existingItem = values.BasketItems.FirstOrDefault(x =>
+            x.ProductId == basketItemDto.ProductId &&
+            AreAttributesEqual(x.SelectedAttributes, basketItemDto.SelectedAttributes));
 
             if (existingItem == null)
             {
@@ -83,6 +85,23 @@ namespace MultiShop.WebUI.Services.BasketServices
         public async Task DeleteBasket(string userId)
         {
             await _httpClient.DeleteAsync($"baskets/DeleteBasket/{userId}");
+        }
+
+        private bool AreAttributesEqual(Dictionary<string, string> dict1, Dictionary<string, string> dict2)
+        {
+            if ((dict1 == null || dict1.Count == 0) && (dict2 == null || dict2.Count == 0)) return true;
+
+            if (dict1 == null || dict2 == null) return false;
+
+            if (dict1.Count != dict2.Count) return false;
+
+            foreach (var kvp in dict1)
+            {
+                if (!dict2.TryGetValue(kvp.Key, out string value2)) return false;
+                if (kvp.Value != value2) return false;
+            }
+
+            return true;
         }
     }
 }

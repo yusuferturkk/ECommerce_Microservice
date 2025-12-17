@@ -32,5 +32,50 @@ namespace MultiShop.Basket.WebAPI.Services
         {
             await _redisService.GetDb().KeyDeleteAsync(userId);
         }
+
+        public async Task AddItemToBasketAsync(BasketItemDto basketItemDto, string userId)
+        {
+            var existBasket = await GetBasket(userId);
+
+            if (existBasket == null)
+            {
+                existBasket = new BasketTotalDto
+                {
+                    UserId = userId,
+                    BasketItems = new List<BasketItemDto>()
+                };
+            }
+
+            var existingItem = existBasket.BasketItems.FirstOrDefault(x =>
+                x.ProductId == basketItemDto.ProductId &&
+                AreAttributesEqual(x.SelectedAttributes, basketItemDto.SelectedAttributes));
+
+            if (existingItem != null)
+            {
+                existingItem.Quantity += basketItemDto.Quantity;
+            }
+            else
+            {
+                existBasket.BasketItems.Add(basketItemDto);
+            }
+
+            await SaveBasket(existBasket);
+        }
+
+        private bool AreAttributesEqual(Dictionary<string, string> dict1, Dictionary<string, string> dict2)
+        {
+            if ((dict1 == null || dict1.Count == 0) && (dict2 == null || dict2.Count == 0)) return true;
+
+            if (dict1 == null || dict2 == null) return false;
+
+            if (dict1.Count != dict2.Count) return false;
+
+            foreach (var kvp in dict1)
+            {
+                if (!dict2.TryGetValue(kvp.Key, out string value2)) return false;
+                if (kvp.Value != value2) return false;
+            }
+            return true;
+        }
     }
 }

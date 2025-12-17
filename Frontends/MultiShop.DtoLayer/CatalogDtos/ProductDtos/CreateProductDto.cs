@@ -8,5 +8,8 @@
         public string ProductDescription { get; set; }
         public string CategoryId { get; set; }
         public string SubCategoryId { get; set; }
+        
+        public List<ProductAttributeDto> ProductAttributes { get; set; } = new List<ProductAttributeDto>();
     }
 }
+

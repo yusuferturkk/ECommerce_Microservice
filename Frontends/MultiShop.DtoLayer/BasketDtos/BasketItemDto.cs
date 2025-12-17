@@ -13,5 +13,7 @@ namespace MultiShop.DtoLayer.BasketDtos
         public string ProductImageUrl { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+
+        public Dictionary<string, string> SelectedAttributes { get; set; } = new Dictionary<string, string>();
     }
 }

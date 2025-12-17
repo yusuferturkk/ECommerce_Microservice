@@ -42,9 +42,10 @@ namespace MultiShop.WebUI.Controllers
             return View(values);
         }
 
-        public async Task<IActionResult> AddBasketItem(string id)
+        public async Task<IActionResult> AddBasketItem(BasketItemDto basketItemDto)
         {
-            var values = await _productService.GetByIdProductAsync(id);
+            var values = await _productService.GetByIdProductAsync(basketItemDto.ProductId);
+
             if (values == null)
             {
                 return RedirectToAction("Index");

@@ -17,8 +17,29 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="align-middle"><img src="@item.ProductImageUrl" alt="" style="width: 50px;">  @item.ProductName</td>
+                        <td class="text-left align-middle">
+                            <div class="d-flex align-items-center" style="min-width: 200px;">
+                                <img src="@item.ProductImageUrl" alt="" style="width: 50px; margin-right: 15px;">
+                                
+                                <div>
+                                    <h6 class="mb-0" style="font-size: 1rem;">@item.ProductName</h6>
+                                    
+                                    @if (item.SelectedAttributes != null && item.SelectedAttributes.Any())
+                                    {
+                                        <div class="mt-1">
+                                            @foreach (var attr in item.SelectedAttributes)
+                                            {
+                                                <span class="badge badge-light border text-secondary font-weight-normal mr-1">
+                                                    @attr.Key: @attr.Value
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </td>
                         <td class="align-middle">@item.Price ₺</td>
+                        
                         <td class="align-middle">
                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                 <div class="input-group-btn">
@@ -34,14 +55,24 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="align-middle">@item.Price ₺</td>
-                        <td class="align-middle"><a href="/ShoppingCart/RemoveBasketItem/@item.ProductId" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a></td>
+                        
+                        <td class="align-middle">@(item.Price * item.Quantity) ₺</td>
+                        
+                        <td class="align-middle">
+                            <a href="/ShoppingCart/RemoveBasketItem/@item.ProductId" class="btn btn-sm btn-danger">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </td>
                     </tr>
                 }
             }
             else
             {
-                <div class="alert alert-warning">Sepetinizde ürün bulunmamaktadır.</div>
+                <tr>
+                    <td colspan="5">
+                         <div class="alert alert-warning m-3">Sepetinizde ürün bulunmamaktadır.</div>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

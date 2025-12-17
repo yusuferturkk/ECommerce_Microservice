@@ -67,6 +67,13 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
         {
             string imagePath = await _fileService.UploadFileAsync(formFile, "images/productCoverImages/");
 
+            if (createProductDto.ProductAttributes != null)
+            {
+                createProductDto.ProductAttributes = createProductDto.ProductAttributes
+                   .Where(x => !string.IsNullOrEmpty(x.AttributeValue))
+                   .ToList();
+            }
+
             if (imagePath != null)
             {
                 createProductDto.ProductImageUrl = imagePath;
@@ -110,6 +117,13 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
         {
             string imagePath = await _fileService.UploadFileAsync(formFile, "images/productCoverImages/");
 
+            if (updateProductDto.ProductAttributes != null)
+            {
+                updateProductDto.ProductAttributes = updateProductDto.ProductAttributes
+                   .Where(x => !string.IsNullOrEmpty(x.AttributeValue))
+                   .ToList();
+            }
+
             if (imagePath != null)
             {
                 updateProductDto.ProductImageUrl = imagePath;
@@ -117,6 +131,52 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
 
             await _productService.UpdateProductAsync(updateProductDto);
             return RedirectToAction("ProductListWithCategory", "Product", new { area = "Admin" });
+        }
+
+        [HttpGet]
+        [Route("GetAttributesByCategoryId/{categoryId}")]
+        public async Task<IActionResult> GetAttributesByCategoryId(string categoryId)
+        {
+            var category = await _categoryService.GetByIdCategoryAsync(categoryId);
+
+            if (category == null) return Json(new List<string>());
+
+            var attributes = new List<string>();
+            string name = category.CategoryName.ToLower();
+
+            if (name.Contains("giyim"))
+            {
+                attributes.Add("Beden");
+                attributes.Add("Renk");
+            }
+            else if (name.Contains("ayakkabı"))
+            {
+                attributes.Add("Numara");
+                attributes.Add("Renk");
+            }
+            else if (name.Contains("elektronik") || name.Contains("telefon") || name.Contains("bilgisayar"))
+            {
+                attributes.Add("Renk");
+                attributes.Add("Dahili Hafıza");
+                attributes.Add("RAM");
+            }
+            else if (name.Contains("beyaz eşya") || name.Contains("ev aletleri"))
+            {
+                attributes.Add("Enerji Sınıfı");
+                attributes.Add("Renk");
+            }
+            else if (name.Contains("mobilya"))
+            {
+                attributes.Add("Renk");
+                attributes.Add("Malzeme");
+            }
+            else
+            {
+                attributes.Add("Renk");
+                attributes.Add("Materyal");
+            }
+
+            return Json(attributes);
         }
 
         void ProductViewBagList()

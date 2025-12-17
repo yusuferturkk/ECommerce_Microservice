@@ -23,5 +23,7 @@ namespace MultiShop.Catalog.Entities
         public string SubCategoryId { get; set; }
         [BsonIgnore]
         public SubCategory SubCategory { get; set; }
+
+        public List<ProductAttribute> ProductAttributes { get; set; }
     }
 }

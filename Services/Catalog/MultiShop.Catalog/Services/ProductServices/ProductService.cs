@@ -100,8 +100,6 @@ namespace MultiShop.Catalog.Services.ProductServices
             return _mapper.Map<List<ResultProductsWithCategoryDto>>(values);
         }
 
-
-
         public async Task<List<ResultProductDto>> GetTop8ProductAsync()
         {
             var values = await _productCollection.Find(x=> true).Limit(8).ToListAsync();

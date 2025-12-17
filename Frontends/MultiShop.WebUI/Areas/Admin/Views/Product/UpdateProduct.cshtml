@@ -43,10 +43,8 @@
                         <div class="col-md-12">
                             <fieldset class="form-group">
                                 <label>Alt Kategori Seçin</label>
-
                                 <select asp-for="SubCategoryId" class="form-control" id="SubCategoryId">
                                     <option value="" selected>Lütfen Önce Kategori Seçin</option>
-
                                     @if (ViewBag.subCategories != null)
                                     {
                                         foreach (var item in (List<ResultSubCategoryDto>)ViewBag.subCategories)
@@ -58,6 +56,39 @@
                                     }
                                 </select>
                             </fieldset>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card" style="margin-top:20px; background-color: #f9f9f9;">
+                                <div class="card-body">
+                                    <h5>Ürün Özellikleri</h5>
+                                    <hr />
+                                    <div id="dynamic-attributes-area" class="row">
+                                        @if (Model.ProductAttributes != null && Model.ProductAttributes.Count > 0)
+                                        {
+                                            for (int i = 0; i < Model.ProductAttributes.Count; i++)
+                                            {
+                                                <div class="col-md-6 mb-3 attribute-group">
+                                                    <label class="font-weight-bold">@Model.ProductAttributes[i].AttributeName</label>
+
+                                                    <input type="hidden" name="ProductAttributes[@i].AttributeName" value="@Model.ProductAttributes[i].AttributeName" />
+
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           name="ProductAttributes[@i].AttributeValue"
+                                                           value="@Model.ProductAttributes[i].AttributeValue"
+                                                           placeholder="Örn: Kırmızı, Mavi (Virgülle ayırın)"
+                                                           required />
+                                                    <small class="text-muted">Mevcut değerler yüklendi.</small>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="text-muted ml-3 initial-msg">Bu ürün için henüz özellik girilmemiş.</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <fieldset class="form-group">
@@ -76,24 +107,80 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-
         var $subCategorySelect = $('#SubCategoryId');
-        var $allOptions = $subCategorySelect.find('option').clone();
+        var $categoryIdSelect = $('#CategoryId');
+        var $attributesArea = $('#dynamic-attributes-area');
 
-        $('#CategoryId').change(function () {
-            var selectedCategoryId = $(this).val();
+        // Tüm alt kategori seçeneklerini hafızada tut (Cloning)
+        var $allSubOptions = $subCategorySelect.find('option').clone();
 
+        // Mevcut seçili değerleri al (Update sayfası olduğu için modelden gelir)
+        var initialCategoryId = $categoryIdSelect.val();
+        var initialSubCategoryId = '@Model.SubCategoryId'; // Razor'dan gelen değer
+
+        // --- FONKSİYON: Alt Kategorileri Filtrele ---
+        function filterSubCategories(catId, selectedSubId) {
             $subCategorySelect.empty();
             $subCategorySelect.append('<option value="">Alt Kategori Seçiniz</option>');
 
-            if (selectedCategoryId) {
-                $allOptions.each(function () {
+            if (catId) {
+                $allSubOptions.each(function () {
                     var optionCategoryId = $(this).data('category-id');
-
-                    if (optionCategoryId == selectedCategoryId) {
-                        $subCategorySelect.append($(this));
+                    // Kategori ID eşleşiyorsa ekle
+                    if (optionCategoryId == catId) {
+                        var $opt = $(this).clone();
+                        // Eğer bu seçenek modeldeki kayıtlı alt kategoriyse "selected" yap
+                        if ($(this).val() == selectedSubId) {
+                            $opt.attr('selected', 'selected');
+                        }
+                        $subCategorySelect.append($opt);
                     }
                 });
+            }
+        }
+
+        if (initialCategoryId) {
+            filterSubCategories(initialCategoryId, initialSubCategoryId);
+        }
+
+        $categoryIdSelect.change(function () {
+            var selectedCategoryId = $(this).val();
+
+            filterSubCategories(selectedCategoryId, null);
+
+            if (selectedCategoryId) {
+                $.ajax({
+                    url: '/Admin/Product/GetAttributesByCategoryId/' + selectedCategoryId,
+                    type: 'GET',
+                    success: function (attributes) {
+                        $attributesArea.empty();
+
+                        if (attributes && attributes.length > 0) {
+                            $.each(attributes, function (index, attributeName) {
+                                var html = `
+                                    <div class="col-md-6 mb-3">
+                                        <label class="font-weight-bold">${attributeName}</label>
+                                        <input type="hidden" name="ProductAttributes[${index}].AttributeName" value="${attributeName}" />
+                                        <input type="text"
+                                               class="form-control"
+                                               name="ProductAttributes[${index}].AttributeValue"
+                                               placeholder="Değer giriniz..."
+                                               required />
+                                        <small class="text-muted text-warning">Kategori değiştiği için lütfen yeni değerleri girin.</small>
+                                    </div>
+                                `;
+                                $attributesArea.append(html);
+                            });
+                        } else {
+                            $attributesArea.html('<p class="text-muted ml-3">Bu kategori için özellik tanımlanmamış.</p>');
+                        }
+                    },
+                    error: function () {
+                        console.log("Hata oluştu.");
+                    }
+                });
+            } else {
+                 $attributesArea.html('<p class="text-muted ml-3">Lütfen kategori seçiniz.</p>');
             }
         });
     });

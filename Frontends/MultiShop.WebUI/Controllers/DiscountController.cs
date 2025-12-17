@@ -28,6 +28,7 @@ namespace MultiShop.WebUI.Controllers
             var values = await _discountService.GetDiscountCouponCountRate(code);
 
             var basketValues = await _basketService.GetBasket();
+            basketValues.DiscountRate = values;
             var totalPriceWithTax = basketValues.TotalPrice + basketValues.TotalPrice / 100 * 10;
 
             var totalNewPriceWithDiscount = totalPriceWithTax - (totalPriceWithTax / 100 * values);

@@ -47,6 +47,14 @@ namespace MultiShop.Basket.WebAPI.Controllers
             return Ok("Sepetteki değişiklikler kaydedildi.");
         }
 
+        [HttpPost("AddItem")]
+        public async Task<IActionResult> AddItemToBasket(BasketItemDto basketItemDto)
+        {
+            var userId = _loginService.GetUserId;
+            await _basketService.AddItemToBasketAsync(basketItemDto, userId);
+            return Ok("Ürün sepete başarıyla eklendi.");
+        }
+
         [HttpDelete("DeleteBasket/{userId}")]
         public async Task<IActionResult> DeleteBasket(string userId)
         {

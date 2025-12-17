@@ -13,16 +13,17 @@ namespace MultiShop.WebUI.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IOrderingService _orderingService; // Yeni eklediğimiz servis
+        private readonly IOrderingService _orderingService;
         private readonly IBasketService _basketService;
+        private readonly IDiscountService _discountService;
         private readonly IUserService _userService;
 
-        // IOrderAddressService'i sildik, çünkü tek bir servis üzerinden gideceğiz.
-        public OrderController(IOrderingService orderingService, IUserService userService, IBasketService basketService)
+        public OrderController(IOrderingService orderingService, IUserService userService, IBasketService basketService, IDiscountService discountService)
         {
             _orderingService = orderingService;
             _userService = userService;
             _basketService = basketService;
+            _discountService = discountService;
         }
 
         [HttpGet]
@@ -38,6 +39,7 @@ namespace MultiShop.WebUI.Controllers
         public async Task<IActionResult> Index(CreateOrderAddressDto createOrderAddressDto)
         {
             var userValues = await _userService.GetUserInfo();
+
             createOrderAddressDto.UserId = userValues.Id;
             var basket = await _basketService.GetBasket();
 
