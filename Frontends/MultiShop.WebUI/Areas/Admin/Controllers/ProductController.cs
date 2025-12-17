@@ -162,7 +162,6 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             }
             else if (name.Contains("beyaz eşya") || name.Contains("ev aletleri"))
             {
-                attributes.Add("Enerji Sınıfı");
                 attributes.Add("Renk");
             }
             else if (name.Contains("mobilya"))
@@ -173,7 +172,6 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             else
             {
                 attributes.Add("Renk");
-                attributes.Add("Materyal");
             }
 
             return Json(attributes);
