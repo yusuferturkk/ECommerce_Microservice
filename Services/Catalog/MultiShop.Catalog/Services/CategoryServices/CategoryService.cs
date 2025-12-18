@@ -59,5 +59,11 @@ namespace MultiShop.Catalog.Services.CategoryServices
                 await _categoryCollection.FindOneAndReplaceAsync(x => x.CategoryId == id, category);
             }
         }
+
+        public async Task<List<ResultCategoryDto>> GetActiveCategoriesAsync()
+        {
+            var values = await _categoryCollection.Find(x => x.Status == true).ToListAsync();
+            return _mapper.Map<List<ResultCategoryDto>>(values);
+        }
     }
 }

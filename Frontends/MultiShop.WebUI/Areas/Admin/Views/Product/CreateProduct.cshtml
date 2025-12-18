@@ -86,12 +86,11 @@
     $(document).ready(function () {
         var $subCategorySelect = $('#SubCategoryId');
         var $allOptions = $subCategorySelect.find('option').clone();
-        var $attributesArea = $('#dynamic-attributes-area'); // Özelliklerin ekleneceği div
+        var $attributesArea = $('#dynamic-attributes-area');
 
         $('#CategoryId').change(function () {
             var selectedCategoryId = $(this).val();
 
-            // 1. İşlem: Alt Kategorileri Filtrele (Senin mevcut kodun)
             $subCategorySelect.empty();
             $subCategorySelect.append('<option value="">Alt Kategori Seçiniz</option>');
 
@@ -103,16 +102,13 @@
                     }
                 });
 
-                // 2. İşlem: Kategorinin Özelliklerini Getir (YENİ KOD)
-                // Controller'daki GetAttributesByCategoryId metoduna istek atıyoruz
                 $.ajax({
                     url: '/Admin/Product/GetAttributesByCategoryId/' + selectedCategoryId,
                     type: 'GET',
                     success: function (attributes) {
-                        $attributesArea.empty(); // Eski inputları temizle
+                        $attributesArea.empty();
 
                         if (attributes && attributes.length > 0) {
-                            // Gelen her özellik ismi için (örn: Beden, Renk) input oluştur
                             $.each(attributes, function (index, attributeName) {
                                     var html = `
                                     <div class="col-md-6 mb-3">
@@ -139,7 +135,6 @@
                 });
 
             } else {
-                // Kategori seçimi kaldırılırsa alanı temizle
                 $attributesArea.html('<p class="text-muted ml-3">Lütfen kategori seçiniz.</p>');
             }
         });

@@ -104,8 +104,8 @@
 
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</a>
-                <a href="#" class="btn btn-primary"><i class="fas fa-reply"></i> Yanıtla</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <a id="btnReply" href="#" class="btn btn-primary"><i class="fas fa-reply"></i> Yanıtla</a>
             </div>
         </div>
     </div>
@@ -122,8 +122,8 @@
 
         // 2. AJAX ile Sunucuya İstek At
         $.ajax({
-            url: '/Mail/GetMailDetail', // WebUI Controller Adresi
-            type: 'POST', // ID'yi güvenli göndermek için POST tercih edelim
+            url: '/Admin/Mail/GetMailDetail',
+            type: 'POST', // Veri çektiğimiz için GET daha uygundur (POST da kalabilir ama Controller ile uymalı)
             data: { id: messageId },
             success: function (data) {
                 if (data) {
@@ -131,6 +131,10 @@
                     $('#modalSubject').text(data.subject);
                     $('#modalSender').text(data.senderName);
                     $('#modalEmail').text(data.senderMail);
+
+                    var replySubject = "Re: " + data.subject;
+                    var url = "/Admin/Mail/SendMail?receiverMail=" + encodeURIComponent(data.senderMail) + "&subject=" + encodeURIComponent(replySubject);
+                    $('#btnReply').attr('href', url);
 
                     // Tarih formatlama (İsteğe bağlı)
                     var date = new Date(data.date);

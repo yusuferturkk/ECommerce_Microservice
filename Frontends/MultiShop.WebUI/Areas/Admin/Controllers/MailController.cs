@@ -47,7 +47,7 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             return View(values);
         }
 
-        [Route("GetMailDetail/{id}")]
+        [Route("GetMailDetail")]
         [HttpPost]
         public async Task<IActionResult> GetMailDetail(string id)
         {
@@ -56,8 +56,17 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             ViewBag.v3 = "Mail Listesi";
             ViewBag.v0 = "Mail İşlemleri";
 
-            var values = await _mailService.GetMailDetail(id);
-            return Json(values);
+            var value = await _mailService.GetMailDetail(id);
+            var mailData = new
+            {
+                senderName = value.SenderName,
+                senderMail = value.SenderMail,
+                subject = value.Subject,
+                body = value.Body,
+                date = value.Date
+            };
+
+            return Json(mailData);
         }
 
         [Route("SendMail")]

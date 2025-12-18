@@ -11,6 +11,7 @@
         <div class="col-md-12">
             <div class="chart-box">
                 <div class="bs-example" data-example-id="bordered-table">
+                    <a href="/Admin/Product/CreateProduct/" class="btn btn-primary btn-rounded">Yeni Ürün Girişi</a>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -23,7 +24,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.OrderDescending())
                             {
                                 count++;
                                 <tr>
@@ -37,7 +38,6 @@
                             }
                         </tbody>
                     </table>
-                    <a href="/Admin/Product/CreateProduct/" class="btn btn-primary btn-rounded">Yeni Ürün Girişi</a>
                 </div>
             </div>
         </div>

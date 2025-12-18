@@ -17,17 +17,14 @@ namespace MultiShop.WebUI.ViewComponents.OrderViewComponents
             _discountService = discountService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string code)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var values = await _discountService.GetDiscountCouponCountRate(code);
             var getBasket = await _basketService.GetBasket();
             ViewBag.total = getBasket.TotalPrice;
             var totalPriceWithTax = getBasket.TotalPrice + 49 +  getBasket.TotalPrice / 100 * 10;
             var tax = getBasket.TotalPrice / 100 * 10;
+            ViewBag.totalPriceWithTax = totalPriceWithTax;
             ViewBag.tax = tax;
-
-            var totalNewPriceWithDiscount = totalPriceWithTax - (totalPriceWithTax / 100 * values);
-            ViewBag.totalNewPriceWithDiscount = totalNewPriceWithDiscount;
 
             var basketTotal = await _basketService.GetBasket();
             var basketItems = basketTotal.BasketItems;

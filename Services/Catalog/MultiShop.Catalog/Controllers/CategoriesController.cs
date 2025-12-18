@@ -39,6 +39,13 @@ namespace MultiShop.Catalog.Controllers
             return Ok("Kategori durumu başarıyla değiştirildi.");
         }
 
+        [HttpGet("GetActiveCategories")]
+        public async Task<IActionResult> GetActiveCategories()
+        {
+            var values = await _categoryService.GetActiveCategoriesAsync();
+            return Ok(values);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoryDto createCategoryDto)
         {

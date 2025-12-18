@@ -31,7 +31,7 @@ namespace MultiShop.IdentityServer
           new IdentityResources.OpenId(),
           new IdentityResources.Profile(),
           new IdentityResources.Email(),
-          new IdentityResource // Role claim'ini dahil ediyoruz
+          new IdentityResource
           {
               Name = "roles",
               DisplayName = "Roles",
