@@ -43,9 +43,11 @@ namespace MultiShop.WebUI.Controllers
             createOrderAddressDto.UserId = userValues.Id;
             var basket = await _basketService.GetBasket();
 
-            var basketTotal = basket.TotalPrice;
-            var tax = basketTotal / 100 * 10;
-            var finalTotalPrice = basketTotal + 49 + tax;
+            decimal productTotal = basket.TotalPrice;
+            decimal cargo = 49.00m;
+            int discountRate = basket.DiscountRate ?? 0;
+            decimal discountAmount = productTotal / 100 * discountRate;
+            decimal finalTotalPrice = (productTotal - discountAmount) + cargo;
 
             CreateOrderDto createOrderingDto = new CreateOrderDto
             {

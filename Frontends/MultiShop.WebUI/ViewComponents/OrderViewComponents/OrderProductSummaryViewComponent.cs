@@ -19,12 +19,19 @@ namespace MultiShop.WebUI.ViewComponents.OrderViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var getBasket = await _basketService.GetBasket();
-            ViewBag.total = getBasket.TotalPrice;
-            var totalPriceWithTax = getBasket.TotalPrice + 49 +  getBasket.TotalPrice / 100 * 10;
-            var tax = getBasket.TotalPrice / 100 * 10;
-            ViewBag.totalPriceWithTax = totalPriceWithTax;
-            ViewBag.tax = tax;
+            var basket = await _basketService.GetBasket();
+
+            decimal productTotal = basket.TotalPrice;
+            decimal cargo = 49.00m;
+            int discountRate = basket.DiscountRate ?? 0;
+            decimal discountAmount = productTotal / 100 * discountRate;
+            decimal finalTotalPrice = (productTotal - discountAmount) + cargo;
+
+            ViewBag.ProductTotal = productTotal;
+            ViewBag.Cargo = cargo;
+            ViewBag.DiscountRate = discountRate;
+            ViewBag.DiscountAmount = discountAmount;
+            ViewBag.FinalTotalPrice = finalTotalPrice;
 
             var basketTotal = await _basketService.GetBasket();
             var basketItems = basketTotal.BasketItems;

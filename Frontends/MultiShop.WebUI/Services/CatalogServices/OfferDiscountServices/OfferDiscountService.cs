@@ -19,7 +19,7 @@ namespace MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices
 
         public async Task DeleteOfferDiscountAsync(string id)
         {
-            await _httpClient.DeleteAsync("offerdiscount/" + id);
+            await _httpClient.DeleteAsync("offerdiscounts/" + id);
         }
 
         public async Task<List<ResultOfferDiscountDto>> GetAllOfferDiscountAsync()
@@ -40,7 +40,7 @@ namespace MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices
 
         public async Task UpdateOfferDiscountAsync(UpdateOfferDiscountDto updateOfferDiscountDto)
         {
-            await _httpClient.PutAsJsonAsync<UpdateOfferDiscountDto>("offerdiscount", updateOfferDiscountDto);
+            await _httpClient.PutAsJsonAsync<UpdateOfferDiscountDto>("offerdiscounts", updateOfferDiscountDto);
         }
     }
 }

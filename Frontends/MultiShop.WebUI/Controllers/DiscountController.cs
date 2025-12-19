@@ -25,15 +25,30 @@ namespace MultiShop.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> ConfirmDiscountCoupon(string code)
         {
-            var values = await _discountService.GetDiscountCouponCountRate(code);
+            if (string.IsNullOrEmpty(code))
+            {
+                TempData["DiscountError"] = "Lütfen bir kupon kodu giriniz.";
+                return RedirectToAction("Index", "ShoppingCart");
+            }
+
+            var discountRate = await _discountService.GetDiscountCouponCountRate(code);
+
+            if (discountRate == 0)
+            {
+                TempData["DiscountError"] = "Geçersiz veya süresi dolmuş bir kupon kodu.";
+                return RedirectToAction("Index", "ShoppingCart");
+            }
 
             var basketValues = await _basketService.GetBasket();
-            basketValues.DiscountRate = values;
-            var totalPriceWithTax = basketValues.TotalPrice + basketValues.TotalPrice / 100 * 10;
+            basketValues.DiscountRate = discountRate; 
+            basketValues.DiscountCode = code;
+            await _basketService.SaveBasket(basketValues);
 
-            var totalNewPriceWithDiscount = totalPriceWithTax - (totalPriceWithTax / 100 * values);
+            var cargo = 49;
+            var totalNewPriceWithDiscount = (basketValues.TotalPrice - (basketValues.TotalPrice / 100 * discountRate)) + cargo;
 
-            return RedirectToAction("Index", "ShoppingCart", new { code = code, discountRate = values, totalNewPriceWithDiscount = totalNewPriceWithDiscount });
+            TempData["DiscountSuccess"] = "Kupon başarıyla uygulandı!";
+            return RedirectToAction("Index", "ShoppingCart", new { code = code, discountRate = discountRate, totalNewPriceWithDiscount = totalNewPriceWithDiscount });
         }
     }
 }
